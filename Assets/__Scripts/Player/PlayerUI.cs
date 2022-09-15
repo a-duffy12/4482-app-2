@@ -8,19 +8,13 @@ using UnityEngine.SceneManagement;
 public class PlayerUI : MonoBehaviour
 {
     [Header("Menus")]
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject leaderboard;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject hud;
 
     [Header("Buttons")]
-    [SerializeField] private Button playButton;
-    [SerializeField] private Button leaderboardButton;
-    [SerializeField] private Button quitButton;
-    [SerializeField] private Button returnToMenuButton1;
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button restartButton;
-    [SerializeField] private Button returnToMenuButton2;
+    [SerializeField] private Button returnToMenuButton;
 
     private float timer;
     private float playerItTime;
@@ -30,24 +24,22 @@ public class PlayerUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
-
-        mainMenu.SetActive(true);
-        leaderboard.SetActive(false);
         pauseMenu.SetActive(false);
-        hud.SetActive(false);
+        hud.SetActive(true);
 
         // setup button listeners
-        playButton.onClick.AddListener(PlayGame);
-        leaderboardButton.onClick.AddListener(OpenLeaderboard);
-        quitButton.onClick.AddListener(QuitGame);
-        returnToMenuButton1.onClick.AddListener(ReturnToMenu);
         resumeButton.onClick.AddListener(ClosePauseMenu);
         restartButton.onClick.AddListener(RestartGame);
-        returnToMenuButton2.onClick.AddListener(ReturnToMenu);
+        returnToMenuButton.onClick.AddListener(ReturnToMenu);
+
+        timer = 180;
+        playerItTime = 0;
+        enemyItTime = 0;
+        playerIt = true;
+
+        // set up hud ui
     }
 
     // Update is called once per frame
@@ -63,40 +55,14 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
-    void PlayGame()
-    {
-        timer = 180;
-        playerItTime = 0;
-        enemyItTime = 0;
-        playerIt = true;
-
-        // set up hud
-
-        mainMenu.SetActive(false);
-        hud.SetActive(true);
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
-        Time.timeScale = 1.0f;
-    }
-
     void ReturnToMenu()
     {
-        mainMenu.SetActive(true);
-        leaderboard.SetActive(false);
-        pauseMenu.SetActive(false);
-        hud.SetActive(false);
-
         Config.totalPlayerItTime += playerItTime;
         Config.totalEnemyItTime += enemyItTime;
-    }
 
-    void OpenLeaderboard()
-    {
-        mainMenu.SetActive(false);
-        leaderboard.SetActive(true);
+        SceneManager.LoadScene("Menu");
     }
+ 
 
     void OpenPauseMenu()
     {
@@ -123,15 +89,7 @@ public class PlayerUI : MonoBehaviour
         Config.totalPlayerItTime += playerItTime;
         Config.totalEnemyItTime += enemyItTime;
 
-        SceneManager.LoadScene("Main");
-    }
-
-    void QuitGame()
-    {
-        Config.totalPlayerItTime += playerItTime;
-        Config.totalEnemyItTime += enemyItTime;
-
-        Application.Quit();
+        SceneManager.LoadScene("Play");
     }
 
     #region input functions
