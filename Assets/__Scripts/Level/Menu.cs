@@ -50,13 +50,13 @@ public class Menu : MonoBehaviour
 
         if (Config.totalPlayerItTime <= Config.totalEnemyItTime)
         {
-            firstPlaceText.text = "Player - " + Config.totalPlayerItTime + "s";
-            lastPlaceText.text = "Enemy - " + Config.totalEnemyItTime + "s";
+            firstPlaceText.text = "Player - " + Config.totalPlayerItTime.ToString("#.#");
+            lastPlaceText.text = "Enemy - " + Config.totalEnemyItTime.ToString("#.#");
         }
         else
         {
-            firstPlaceText.text = "Enemy - " + Config.totalEnemyItTime.ToString("#.#") + "s";
-            lastPlaceText.text = "Player - " + Config.totalPlayerItTime.ToString("#.#") + "s";
+            firstPlaceText.text = "Enemy - " + Config.totalEnemyItTime.ToString("#.#");
+            lastPlaceText.text = "Player - " + Config.totalPlayerItTime.ToString("#.#");
         }
 
         mainMenu.SetActive(false);

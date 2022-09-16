@@ -18,10 +18,16 @@ public class PlayerUI : MonoBehaviour
 
     [Header("Text")]
     [SerializeField] private Text endText;
+    [SerializeField] private Text timerText;
+    [SerializeField] private Text playerText;
+    [SerializeField] private Text playerScoreText;
+    [SerializeField] private Text enemyText;
+    [SerializeField] private Text enemyScoreText;
 
     private float timer;
     private float playerItTime;
     private float enemyItTime;
+    private bool playing;
 
     // Start is called before the first frame update
     void Start()
@@ -39,30 +45,53 @@ public class PlayerUI : MonoBehaviour
         returnToMenuButton.onClick.AddListener(ReturnToMenu);
 
         timer = 180;
-        playerItTime = 0;
-        enemyItTime = 0;
+        playerItTime = 0.0f;
+        enemyItTime = 0.0f;
         Config.playerIt = true;
 
-        // set up hud ui
+        timerText.text = timer.ToString("#");
+        playerScoreText.text = playerItTime.ToString("#");
+        playerText.color = Color.red;
+        playerScoreText.color = Color.red;
+        enemyScoreText.text = enemyItTime.ToString("#");
+        enemyText.color = Color.black;
+        enemyScoreText.color = Color.black;
+
+        playing = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         timer -= Time.deltaTime;
+        timerText.text = timer.ToString("#");
 
-        if (Config.playerIt)
+        if (playing)
         {
-            playerItTime += Time.deltaTime;
-        }
-        else
-        {
-            enemyItTime += Time.deltaTime;
+            if (Config.playerIt)
+            {
+                playerItTime += Time.deltaTime;
+                playerScoreText.text = playerItTime.ToString("#.#");
+                playerText.color = Color.red;
+                playerScoreText.color = Color.red;
+                enemyText.color = Color.black;
+                enemyScoreText.color = Color.black;
+            }
+            else
+            {
+                enemyItTime += Time.deltaTime;
+                enemyScoreText.text = enemyItTime.ToString("#.#");
+                enemyText.color = Color.red;
+                enemyScoreText.color = Color.red;
+                playerText.color = Color.black;
+                playerScoreText.color = Color.black;
+            }
         }
 
         if (timer <= 0)
         {
-            Time.timeScale = 0f;
+            playing = false;
+            Time.timeScale = 0.00001f;
             
             if (playerItTime <= enemyItTime)
             {
@@ -73,14 +102,19 @@ public class PlayerUI : MonoBehaviour
             {
                 endText.text = "LOSER";
                 endText.color = Color.red;
-            }   
+            }
+
+            Config.totalPlayerItTime += playerItTime;
+            Config.totalEnemyItTime += enemyItTime;
+
+            StartCoroutine(RestartPlay(0.0001f)); // waits for equivalent of 10s before restarting play
         }
     }
 
     void ReturnToMenu()
     {
-        Config.totalPlayerItTime += playerItTime;
-        Config.totalEnemyItTime += enemyItTime;
+        //Config.totalPlayerItTime += playerItTime;
+        //Config.totalEnemyItTime += enemyItTime;
 
         SceneManager.LoadScene("Menu");
     }
@@ -93,12 +127,14 @@ public class PlayerUI : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
 
+        endText.gameObject.SetActive(false);
         pauseMenu.SetActive(true);
     }
 
     void ClosePauseMenu()
     {
         pauseMenu.SetActive(false);
+        endText.gameObject.SetActive(true);
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -107,10 +143,18 @@ public class PlayerUI : MonoBehaviour
     }
 
     void RestartGame()
-    {
-        Config.totalPlayerItTime += playerItTime;
-        Config.totalEnemyItTime += enemyItTime;
+    {   
+        Debug.Log("????");
+        //Config.totalPlayerItTime += playerItTime;
+        //Config.totalEnemyItTime += enemyItTime;
 
+        SceneManager.LoadScene("Play");
+    }
+
+    IEnumerator RestartPlay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
         SceneManager.LoadScene("Play");
     }
 
