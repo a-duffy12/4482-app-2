@@ -45,6 +45,9 @@ public class Menu : MonoBehaviour
 
     void OpenLeaderboard()
     {
+        firstPlaceText.color = Color.green;
+        lastPlaceText.color = Color.red;
+
         if (Config.totalPlayerItTime <= Config.totalEnemyItTime)
         {
             firstPlaceText.text = "Player - " + Config.totalPlayerItTime + "s";

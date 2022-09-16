@@ -24,6 +24,7 @@ public class Config
     [Range(0f, 20)] public static float deceleration = 10f;
     [Range(0f, 20)] public static float friction = 6f;
 
+    [HideInInspector] public static bool playerIt;
     [HideInInspector] public static float totalPlayerItTime;
     [HideInInspector] public static float totalEnemyItTime;
 }

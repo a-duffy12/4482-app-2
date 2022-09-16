@@ -16,10 +16,12 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private Button returnToMenuButton;
 
+    [Header("Text")]
+    [SerializeField] private Text endText;
+
     private float timer;
     private float playerItTime;
     private float enemyItTime;
-    public bool playerIt;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +30,8 @@ public class PlayerUI : MonoBehaviour
 
         pauseMenu.SetActive(false);
         hud.SetActive(true);
+        
+        endText.text = "";
 
         // setup button listeners
         resumeButton.onClick.AddListener(ClosePauseMenu);
@@ -37,7 +41,7 @@ public class PlayerUI : MonoBehaviour
         timer = 180;
         playerItTime = 0;
         enemyItTime = 0;
-        playerIt = true;
+        Config.playerIt = true;
 
         // set up hud ui
     }
@@ -45,13 +49,31 @@ public class PlayerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerIt)
+        timer -= Time.deltaTime;
+
+        if (Config.playerIt)
         {
             playerItTime += Time.deltaTime;
         }
         else
         {
             enemyItTime += Time.deltaTime;
+        }
+
+        if (timer <= 0)
+        {
+            Time.timeScale = 0f;
+            
+            if (playerItTime <= enemyItTime)
+            {
+                endText.text = "WINNER";
+                endText.color = Color.green;
+            }
+            else
+            {
+                endText.text = "LOSER";
+                endText.color = Color.red;
+            }   
         }
     }
 
