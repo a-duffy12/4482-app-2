@@ -98,6 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 705f94459287a764e90b36442c0ac603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireRate: 4
+  fireSpeed: 1500
+  lookDistance: 150
+  attackDistance: 50
+  dartPrefab: {fileID: 7297236357137237111, guid: d1b287532fcb4d3419e6fda70963b723, type: 3}
+  firePoint: {fileID: 2634286699554379130}
 --- !u!136 &2634286698635927979
 CapsuleCollider:
   m_ObjectHideFlags: 0
