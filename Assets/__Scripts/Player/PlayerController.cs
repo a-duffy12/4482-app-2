@@ -69,11 +69,11 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            GroundMove((wStrafe + sStrafe), (aStrafe + sStrafe), jump);
+            GroundMove((wStrafe + sStrafe), (aStrafe + dStrafe), jump);
         }
         else
         {
-            AirMove((wStrafe + sStrafe), (aStrafe + sStrafe), jump);
+            AirMove((wStrafe + sStrafe), (aStrafe + dStrafe), jump);
         }
 
         controller.Move(playerVelocity * Time.deltaTime);
@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
         if (accelSpeed > addSpeed) accelSpeed = addSpeed; // prevent over acceleration
 
         playerVelocity.x += accelSpeed * wishDirection.x;
-        playerVelocity.z += accelSpeed * wishDirection.y;
+        playerVelocity.z += accelSpeed * wishDirection.z;
     }
 
     void ApplyFriction(float amount)

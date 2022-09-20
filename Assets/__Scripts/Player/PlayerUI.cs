@@ -10,6 +10,7 @@ public class PlayerUI : MonoBehaviour
     [Header("Menus")]
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject hud;
+    [SerializeField] private GameObject crosshair;
 
     [Header("Buttons")]
     [SerializeField] private Button resumeButton;
@@ -28,6 +29,7 @@ public class PlayerUI : MonoBehaviour
     private float playerItTime;
     private float enemyItTime;
     private bool playing;
+    private bool scoreUpdated = false;
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +94,7 @@ public class PlayerUI : MonoBehaviour
         {
             playing = false;
             Time.timeScale = 0.00001f;
+            crosshair.SetActive(false);
             
             if (playerItTime <= enemyItTime)
             {
@@ -104,8 +107,12 @@ public class PlayerUI : MonoBehaviour
                 endText.color = Color.red;
             }
 
-            Config.totalPlayerItTime += playerItTime;
-            Config.totalEnemyItTime += enemyItTime;
+            if (!scoreUpdated)
+            {
+                Config.totalPlayerItTime += playerItTime;
+                Config.totalEnemyItTime += enemyItTime;
+                scoreUpdated = true;
+            }
 
             StartCoroutine(RestartPlay(0.0001f)); // waits for equivalent of 10s before restarting play
         }
@@ -128,12 +135,14 @@ public class PlayerUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
 
         endText.gameObject.SetActive(false);
+        crosshair.SetActive(false);
         pauseMenu.SetActive(true);
     }
 
     void ClosePauseMenu()
     {
         pauseMenu.SetActive(false);
+        crosshair.SetActive(true);
         endText.gameObject.SetActive(true);
 
         Cursor.visible = false;

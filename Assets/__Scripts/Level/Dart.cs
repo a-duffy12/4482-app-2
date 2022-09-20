@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Dart : MonoBehaviour
 {
-    public float flyTime = 2.0f;
+    public float flyTime = 5.0f;
 
     Rigidbody rb;
     float shotTime;
@@ -36,6 +36,7 @@ public class Dart : MonoBehaviour
         if (enemy != null && Config.playerIt) // enemy is hit and player is it
         {
             Config.playerIt = false;
+            enemy.lastItTime = Time.time;
         }
         else if (player != null && !Config.playerIt) // player is hit and enemy is it
         {

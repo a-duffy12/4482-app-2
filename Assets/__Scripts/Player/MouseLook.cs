@@ -9,6 +9,7 @@ public class MouseLook : MonoBehaviour
     public Camera firstPersonCamera;
     public Camera thirdPersonCamera;
     [SerializeField] private float sensMod; // tweak this to get sens close to source values
+    [SerializeField] private GameObject crosshair;
 
     float xRotation = 0f;
 
@@ -77,12 +78,14 @@ public class MouseLook : MonoBehaviour
                 Config.firstPerson = false;
                 firstPersonCamera.enabled = false;
                 thirdPersonCamera.enabled = true;
+                crosshair.SetActive(false);
             }
             else
             {
                 Config.firstPerson = true;
                 firstPersonCamera.enabled = true;
                 thirdPersonCamera.enabled = false;
+                crosshair.SetActive(true);
             }
         }
     }

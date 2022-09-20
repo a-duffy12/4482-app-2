@@ -6,21 +6,19 @@ using UnityEngine.InputSystem;
 public class PlayerSystem : MonoBehaviour
 {
     [Header("Stats")]
-    public float fireRate = 2.0f;
-    public float fireSpeed = 1500;
+    public float fireRate = 1.0f;
+    public float fireSpeed = 2000;
 
     [Header("GameObjects")]
     public GameObject dartPrefab;
     public Transform firePoint;
-
-    Rigidbody rb;
 
     private float lastFireTime;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+
     }
 
     // Update is called once per frame
@@ -33,7 +31,7 @@ public class PlayerSystem : MonoBehaviour
 
     public void Shoot(InputAction.CallbackContext con)
     {
-        if (Config.playerIt && (Time.time > lastFireTime + (1/fireRate))) // can only shoot if it and are within fire rate cap
+        if (Config.playerIt && (Time.time > lastFireTime + (1/fireRate))) // can only shoot if player is it and are within fire rate cap
         {
             GameObject dartObject = Instantiate(dartPrefab, firePoint.position, firePoint.rotation);
 
