@@ -153,7 +153,6 @@ public class PlayerUI : MonoBehaviour
 
     void RestartGame()
     {   
-        Debug.Log("????");
         //Config.totalPlayerItTime += playerItTime;
         //Config.totalEnemyItTime += enemyItTime;
 

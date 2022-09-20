@@ -18,14 +18,18 @@ public class Enemy : MonoBehaviour
     public Transform firePoint;
 
     Transform playerTransform;
+    Rigidbody rb;
+    Animator animator;
     
     private float lastFireTime;
     [HideInInspector] public float lastItTime;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
 
         // audio source setup
     }
@@ -44,6 +48,8 @@ public class Enemy : MonoBehaviour
         }
 
         Move(distanceToPlayer);
+
+        animator.SetFloat("Velocity", rb.velocity.magnitude);
     }
 
     void Shoot()

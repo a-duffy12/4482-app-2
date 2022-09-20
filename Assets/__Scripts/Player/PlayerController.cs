@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource movementSource;
 
+    Animator animator;
+
     #endregion private properties
 
     #region math properties
@@ -59,6 +61,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Cursor.visible = false;
+        animator = GetComponentInChildren<Animator>();
 
         // set up audio source
     }
@@ -77,6 +80,33 @@ public class PlayerController : MonoBehaviour
         }
 
         controller.Move(playerVelocity * Time.deltaTime);
+
+        // set animator based on which strafe direction is being applied
+        if (wStrafe > sStrafe)
+        {
+            animator.SetInteger("WSMove", 1);
+        }
+        else if (wStrafe == sStrafe)
+        {
+            animator.SetInteger("WSMove", 0);
+        }
+        else if (wStrafe < sStrafe)
+        {
+            animator.SetInteger("WSMove", -1);
+        }
+        
+        if (aStrafe > dStrafe)
+        {
+            animator.SetInteger("ADMove", -1);
+        }
+        else if (aStrafe == dStrafe)
+        {
+            animator.SetInteger("ADMove", 0);
+        }
+        else if (aStrafe < dStrafe)
+        {
+            animator.SetInteger("ADMove", 1);
+        } 
     }
 
     #region movement methods
@@ -182,6 +212,7 @@ public class PlayerController : MonoBehaviour
             playerVelocity.y = Config.jumpSpeed;
             lastJumpTime = Time.time;
             jump = false; // no longer want to jump
+            animator.SetTrigger("Jump");
         }
     }
 
