@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [Range(0f, 0.5f)] [SerializeField] private float groundRadius = 0.15f;
 
+    [Header("Audio")]
+    public AudioClip walkAudio;
+    public AudioClip jumpAudio;
+
     #endregion public properties
 
     #region private properties
@@ -29,9 +33,8 @@ public class PlayerController : MonoBehaviour
     private float dStrafe = 0f;
     private bool jump = false;
 
-    private AudioSource movementSource;
-
     Animator animator;
+    AudioSource movementSource;
 
     #endregion private properties
 
@@ -61,7 +64,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         animator = GetComponentInChildren<Animator>();
+        movementSource = GetComponent<AudioSource>();
+        movementSource.playOnAwake = false;
+        movementSource.spatialBlend = 1f;
+        movementSource.volume = 0.5f;
 
         // set up audio source
     }
@@ -73,6 +81,12 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             GroundMove((wStrafe + sStrafe), (aStrafe + dStrafe), jump);
+
+            if (!movementSource.isPlaying && (wStrafe + sStrafe != 0 || aStrafe + dStrafe != 0))
+            {
+                movementSource.clip = walkAudio;
+                movementSource.Play();
+            }
         }
         else
         {
@@ -213,6 +227,8 @@ public class PlayerController : MonoBehaviour
             lastJumpTime = Time.time;
             jump = false; // no longer want to jump
             animator.SetTrigger("Jump");
+            movementSource.clip = jumpAudio;
+            movementSource.Play();
         }
     }
 

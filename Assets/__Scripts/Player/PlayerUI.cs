@@ -25,11 +25,17 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Text enemyText;
     [SerializeField] private Text enemyScoreText;
 
+    [Header("Audio")]
+    public AudioClip winAudio;
+    public AudioClip loseAudio;
+
     private float timer;
     private float playerItTime;
     private float enemyItTime;
     private bool playing;
     private bool scoreUpdated = false;
+
+    AudioSource uiSource;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +66,11 @@ public class PlayerUI : MonoBehaviour
         enemyScoreText.color = Color.black;
 
         playing = true;
+
+        uiSource = GetComponentInChildren<AudioSource>();
+        uiSource.playOnAwake = false;
+        uiSource.spatialBlend = 1f;
+        uiSource.volume = 1f;
     }
 
     // Update is called once per frame
@@ -112,6 +123,17 @@ public class PlayerUI : MonoBehaviour
                 Config.totalPlayerItTime += playerItTime;
                 Config.totalEnemyItTime += enemyItTime;
                 scoreUpdated = true;
+
+                if (playerItTime <= enemyItTime)
+                {
+                    uiSource.clip = winAudio;
+                    uiSource.Play();
+                }
+                else
+                {
+                    uiSource.clip = loseAudio;
+                    uiSource.Play();
+                }
             }
 
             StartCoroutine(RestartPlay(0.0001f)); // waits for equivalent of 10s before restarting play
@@ -120,9 +142,6 @@ public class PlayerUI : MonoBehaviour
 
     void ReturnToMenu()
     {
-        //Config.totalPlayerItTime += playerItTime;
-        //Config.totalEnemyItTime += enemyItTime;
-
         SceneManager.LoadScene("Menu");
     }
  

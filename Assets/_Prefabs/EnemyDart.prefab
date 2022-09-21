@@ -76,6 +76,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flyTime: 5
+  playerDart: 0
+  shootAudio: {fileID: 8300000, guid: 12ef05e9ca7554648b4a795ebb2f348c, type: 3}
+  goodAudio: {fileID: 8300000, guid: 2a349ee32a7bccd44bb672b9470ebcd3, type: 3}
+  badAudio: {fileID: 8300000, guid: afa530474bb581945bdc55a1f1c582e7, type: 3}
 --- !u!1001 &2324528074238596012
 PrefabInstance:
   m_ObjectHideFlags: 0

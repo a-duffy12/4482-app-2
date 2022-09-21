@@ -17,9 +17,13 @@ public class Enemy : MonoBehaviour
     public GameObject dartPrefab;
     public Transform firePoint;
 
+    [Header("Audio")]
+    public AudioClip walkAudio;
+
     Transform playerTransform;
     Rigidbody rb;
     Animator animator;
+    AudioSource enemySource;
     
     private float lastFireTime;
     [HideInInspector] public float lastItTime;
@@ -30,8 +34,10 @@ public class Enemy : MonoBehaviour
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-
-        // audio source setup
+        enemySource = GetComponent<AudioSource>();
+        enemySource.playOnAwake = false;
+        enemySource.spatialBlend = 1f;
+        enemySource.volume = 0.8f;
     }
 
     // Update is called once per frame
@@ -80,6 +86,12 @@ public class Enemy : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, movementSpeed * Time.deltaTime);
             }
+        }
+
+        if (!enemySource.isPlaying && rb.velocity.magnitude > 0.1f)
+        {
+            enemySource.clip = walkAudio;
+            enemySource.Play();
         }
     }
 }
